@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { Pageable } from 'src/app/model/Pageable';
 import { PageableResponse } from 'src/app/model/PageableResponse';
 import { ServicePersonService } from '../service-person.service';
@@ -9,15 +10,27 @@ import { ServicePersonService } from '../service-person.service';
   styleUrls: ['./list-person.component.scss']
 })
 export class ListPersonComponent implements OnInit {
-  pageable: Pageable = { page: 0, direction: "asc", size: 50, sort: "name" }
+  pageable: Pageable = { page: 0, direction: "asc", size: 5, sort: "name" }
+
+  @Output()
+  pageChange!: EventEmitter<number>;
+
+  @Output()
+  pageBoundsCorrection!: EventEmitter<number>;
+
   filter: string = "";
+  pag: number = 1;
+  paginaAtual: number = 1;
+  contador: number = 5;
   search: string = '';
+  totalPagina: any;
   person: any;
   personContact: any;
+  totalElements: any;
   showDetails = false;
   selectedItem?: number;
 
-  constructor(private personService: ServicePersonService) { }
+  constructor(private personService: ServicePersonService, private router: Router) { }
 
   ngOnInit(): void {
     this.findAll(this.search)
@@ -28,7 +41,10 @@ export class ListPersonComponent implements OnInit {
     this.personService.findAll(this.pageable).subscribe(
       (pageableResponse: PageableResponse) => {
         this.person = pageableResponse.content;
+        this.pageable.page = pageableResponse.totalPages;
+        this.totalPagina = pageableResponse;
       })
+
   }
 
   all() {
@@ -46,20 +62,27 @@ export class ListPersonComponent implements OnInit {
   remove() {
     if (this.selectedItem) {
       this.personService.removePerson(this.selectedItem).subscribe(() => {
-        this.findAll('');
+        this.router.navigate(['/']);
+        this.handlePageChange(0);
       })
     }
   }
 
   details(code: number) {
     this.selectedItem = code;
-    this.personContact = this.person[code].contacts;
-    console.log(this.personContact)
+    this.personContact = this.person.find((e: { code: number; }) => e.code == code)
     this.showDetails = true;
   }
 
   close() {
     this.showDetails = false;
   }
+
+  handlePageChange(e: any) {
+    this.pageable.page = e;
+    this.pag = e;
+    this.findAll('');
+  }
+
 
 }

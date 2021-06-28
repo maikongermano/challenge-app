@@ -16,7 +16,7 @@ class Pageable {
 export class PageableResponse {
     content: any[] | undefined;
     pageable: Pageable | undefined;
-    totalElements: number | undefined;
+    totalElements!: number;
     totalPages: number | undefined;
     last: boolean | undefined;
     number: number | undefined;
