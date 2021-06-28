@@ -1,0 +1,67 @@
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Cadastro</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Nome</label>
+                                <input class="form-control" pInputText type="text" name="nome" [(ngModel)]="person.name"
+                                    #nome="ngModel" required minlength="5">
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>CPF</label>
+                                <input class="form-control" pInputText type="text" name="numero"
+                                    [(ngModel)]="person.cpf" #numero="ngModel" required>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>Data Nascimento</label>
+                                <input class="form-control" pInputText type="date" name="numero"
+                                    [(ngModel)]="person.birthDate" #numero="ngModel" required>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <app-form-contact [contacts]="person.contacts"></app-form-contact>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2 ">
+                                    <button class="btn bg-danger btn-block" (click)="cancel()">Cancelar</button>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn bg-primary btn-block" (click)="save(person)">Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <p>
+                                {{errorResponse}}
+                            </p>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
