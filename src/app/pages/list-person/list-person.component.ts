@@ -26,7 +26,6 @@ export class ListPersonComponent implements OnInit {
   totalPagina: any;
   person: any;
   personContact: any;
-  totalElements: any;
   showDetails = false;
   selectedItem?: number;
 
